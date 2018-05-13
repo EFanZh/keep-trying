@@ -2,6 +2,11 @@
 name = "keep-trying"
 version = "0.1.0"
 authors = ["EFanZh <efanzh@gmail.com>"]
+description = "Run a command repeatedly until it exits successfully."
+repository = "https://github.com/EFanZh/keep-trying"
+readme = "README.md"
+categories = ["command-line-utilities"]
+license = "MIT"
 
 [dependencies]
 shell-escape = "0.1.4"
