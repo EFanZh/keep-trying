@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "cwd": "${workspaceFolder}",
+            "internalConsoleOptions": "openOnSessionStart",
+            "name": "(Windows) Launch",
+            "preLaunchTask": "Rust: cargo build",
+            "program": "${workspaceFolder}\\target\\debug\\keep-trying.exe",
+            "request": "launch",
+            "sourceFileMap": {
+                "C:\\projects": "${env:USERPROFILE}\\.rustup\\toolchains\\nightly-x86_64-pc-windows-msvc\\lib\\rustlib\\src"
+            },
+            "type": "cppvsdbg"
+        }
+    ],
+    "version": "0.2.0"
+}
