@@ -49,13 +49,13 @@ fn keep_trying(program: &OsStr, args: &[OsString]) {
                         Some(code) => {
                             // Special case for windows.
                             if cfg!(target_os = "windows") {
-                                const STILL_ALIVE: u32 = 259;
+                                const STILL_ACTIVE: u32 = 259;
 
-                                if code == STILL_ALIVE as _ {
+                                if code == STILL_ACTIVE as _ {
                                     eprintln!(
-"Got an exit code of STILL_ALIVE ({}) which is not a valid exit code, stop trying. \
+"Got an exit code of STILL_ACTIVE ({}) which is not a valid exit code, stop trying. \
 See https://msdn.microsoft.com/en-us/library/windows/desktop/ms683189.aspx for more information",
-                                        STILL_ALIVE
+                                        STILL_ACTIVE
                                     );
                                     break;
                                 }
