@@ -1,6 +1,6 @@
 [package]
 name = "keep-trying"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["EFanZh <efanzh@gmail.com>"]
 description = "Run a command repeatedly until it exits successfully."
 repository = "https://github.com/EFanZh/keep-trying"
