@@ -1,6 +1,5 @@
 extern crate shell_escape;
 
-use std::borrow::Cow;
 use std::env;
 use std::ffi::{OsStr, OsString};
 use std::iter;
@@ -11,7 +10,7 @@ fn create_command_line(program: &OsStr, args: &[OsString]) -> String {
     iter::once(program)
         .chain(args.into_iter().map(|x| x.as_ref()))
         .map(|x| shell_escape::escape(x.to_string_lossy()))
-        .collect::<Cow<_>>()
+        .collect::<Vec<_>>()
         .join(" ")
 }
 
@@ -48,8 +47,22 @@ fn keep_trying(program: &OsStr, args: &[OsString]) {
                             break;
                         }
                         Some(code) => {
+                            // Special case for windows.
+                            if cfg!(target_os = "windows") {
+                                const STILL_ALIVE: u32 = 259;
+
+                                if code == STILL_ALIVE as _ {
+                                    eprintln!(
+"Got an exit code of STILL_ALIVE ({}) which is not a valid exit code, stop trying. \
+See https://msdn.microsoft.com/en-us/library/windows/desktop/ms683189.aspx for more information",
+                                        STILL_ALIVE
+                                    );
+                                    break;
+                                }
+                            }
+
                             // Process exited with a failure exit code, retry.
-                            eprintln!("[With exit code {}, retrying ({} times)] {}", code, i, command_line);
+                            eprintln!("[Exit code is {}, retrying ({} times)] {}", code, i, command_line);
                         }
                     }
                 }
@@ -70,7 +83,7 @@ fn main() {
         usage(&arguments.next().unwrap());
     } else {
         let program = arguments.nth(1).unwrap();
-        let args = arguments.collect::<Cow<_>>();
+        let args = arguments.collect::<Vec<_>>();
 
         keep_trying(&program, &args);
     }
