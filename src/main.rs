@@ -6,20 +6,20 @@ use std::iter;
 use std::path::Path;
 use std::process::Command;
 
-fn create_command_line(program: &OsStr, args: &[OsString]) -> String {
-    iter::once(program)
-        .chain(args.into_iter().map(|x| x.as_ref()))
-        .map(|x| shell_escape::escape(x.to_string_lossy()))
-        .collect::<Vec<_>>()
-        .join(" ")
-}
-
 fn create_command(program: &OsStr, args: &[OsString]) -> Command {
     let mut command = Command::new(program);
 
     command.args(args);
 
     command
+}
+
+fn create_command_line(program: &OsStr, args: &[OsString]) -> String {
+    iter::once(program)
+        .chain(args.into_iter().map(|x| x.as_ref()))
+        .map(|x| shell_escape::escape(x.to_string_lossy()))
+        .collect::<Vec<_>>()
+        .join(" ")
 }
 
 // Just a separator.
@@ -69,7 +69,7 @@ See https://msdn.microsoft.com/en-us/library/windows/desktop/ms683189.aspx for m
             }
             Err(error) => {
                 // Failed to start process.
-                eprintln!("Fail to run “{}”: {}", command_line, error);
+                eprintln!("Failed to run “{}”: {}", command_line, error);
                 break;
             }
         }
@@ -77,14 +77,10 @@ See https://msdn.microsoft.com/en-us/library/windows/desktop/ms683189.aspx for m
 }
 
 fn main() {
-    let mut arguments = env::args_os();
+    let arguments = env::args_os().collect::<Vec<_>>();
 
-    if arguments.len() < 2 {
-        usage(&arguments.next().unwrap());
-    } else {
-        let program = arguments.nth(1).unwrap();
-        let args = arguments.collect::<Vec<_>>();
-
-        keep_trying(&program, &args);
+    match arguments[1..].split_first() {
+        None => usage(&arguments[0]),
+        Some((program, args)) => keep_trying(program, args),
     }
 }
