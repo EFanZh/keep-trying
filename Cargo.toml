@@ -1,12 +1,14 @@
 [package]
-name = "keep-trying"
-version = "0.1.1"
 authors = ["EFanZh <efanzh@gmail.com>"]
-description = "Run a command repeatedly until it exits successfully."
-repository = "https://github.com/EFanZh/keep-trying"
-readme = "README.md"
 categories = ["command-line-utilities"]
+description = "Run a command repeatedly until it exits successfully."
+edition = "2021"
+keywords = ["utility"]
 license = "MIT"
+name = "keep-trying"
+readme = "README.md"
+repository = "https://github.com/EFanZh/keep-trying"
+version = "0.1.2"
 
 [dependencies]
-shell-escape = "0.1.4"
+shell-escape = "0.1"
